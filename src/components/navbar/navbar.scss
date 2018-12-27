@@ -1,0 +1,73 @@
+@import "../../vars.scss";
+@import "../../mixins.scss";
+
+.navbar {
+    background-color: $col-white;
+
+    p {
+        display: inline;
+    }
+
+    .navbar-item {
+        padding: 7px;
+        cursor: pointer;
+        display: inline-block;
+
+        &:hover {
+            background-color: $col-light;
+
+            a, p {
+                color: $col-white;
+            }
+
+            &::after {
+                border-color: $col-white;
+            }
+        }
+
+        &::after {
+            content: "";
+            box-sizing: border-box;
+            display: inline-block;
+            position: relative;
+            margin-left: 5px;
+            top: 1px;
+            height: 20px;
+            overflow: hidden;
+            border: 2px solid $col-light;
+            border-radius: 3px;
+        }     
+
+        &:last-child {
+            float: right;
+
+            &::after {
+                /* display: none made the li a few pixels too thin */
+                border: 0;
+                border-radius: 0;
+            }
+        }
+
+    }
+
+   @include small {
+        .navbar-item {
+            display: block;
+            text-align: center;
+
+            &:last-child {
+                float: none;
+            }
+
+            &::after {
+                display: none;
+            }
+        }
+    }
+
+    a, p {
+        font-size: 22px;
+        color: $col-light;
+        text-decoration: none;        
+    }
+}

@@ -1,0 +1,12 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  justify-items: flex-start;
+  background-color: #d1d1d1;
+  height: 100vh;
+  font-family: "Roboto";
+
+  .container {
+    flex-grow: 1;
+  }
+}
