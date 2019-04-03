@@ -2,11 +2,8 @@
   display: flex;
   flex-direction: column;
   justify-items: flex-start;
+  align-items: center;
   background-color: #d1d1d1;
   height: 100vh;
   font-family: "Roboto";
-
-  .container {
-    flex-grow: 1;
-  }
 }
