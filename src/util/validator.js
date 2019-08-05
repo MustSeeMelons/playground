@@ -1,5 +1,0 @@
-class Validator {
-
-};
-
-export { Validator };
