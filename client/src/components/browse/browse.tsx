@@ -2,7 +2,7 @@ import React from "react";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import { Divider, Paper, Grid, MenuList, MenuItem, Box } from "@material-ui/core";
 import { connect } from "react-redux"
-import { Category } from "../../../../_models/category";
+import { Category } from "../../../../_requests/addCategory";
 import { addCategoryActionCreator } from "../../actions/categoryActions";
 import { State } from "../../store/store";
 import { Dispatch } from "redux";
@@ -38,9 +38,6 @@ const Browse: React.FC<ContentProps> = (props: ContentProps) => {
                         )
                     })}
                 </MenuList>
-                <Paper>
-                    Some content
-                </Paper>
             </Grid>
         </Paper>
     );
