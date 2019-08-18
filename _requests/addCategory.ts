@@ -6,5 +6,5 @@
 export interface Category {
     id: string;
     parentId?: string;
-    title: string; // This should be a code with translations for each lang
+    title: string; // This should be a code, translated for each lang
 }

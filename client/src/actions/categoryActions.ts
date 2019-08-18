@@ -1,4 +1,4 @@
-import { Category } from "../models/category";
+import { Category } from "../../../_models/category";
 
 export enum CategoryActionTypes {
     ADD = "CAT_ADD",

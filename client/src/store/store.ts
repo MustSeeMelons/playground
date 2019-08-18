@@ -1,6 +1,6 @@
 import { createStore } from "redux";
 import { categoryReducer } from "../reducers/categoryReducers";
-import { Category } from "../models/category";
+import { Category } from "../../../_models/category";
 
 // Global store definition
 export interface State {
