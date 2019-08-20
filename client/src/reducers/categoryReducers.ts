@@ -1,13 +1,16 @@
 import { CategoryActionTypes } from "../actions/categoryActions";
-import { initialState, State } from "../store/store";
+import { categoryInitialState, CategoryState } from "../store/store";
 import { Action } from "../actions";
 
-export const categoryReducer = (state: State = initialState, action: Action) => {
+export const categoryReducer = (state: CategoryState = categoryInitialState, action: Action) => {
     switch (action.type) {
         case CategoryActionTypes.ADD:
             return {
-                ...state,
-                images: [...state.images, action.payload.category]
+                categories: [...state.categories, action.payload.category]
+            }
+        case CategoryActionTypes.ADD_MULTIPLE:
+            return {
+                categories: [...state.categories, ...action.payload.categories]
             }
         default:
             return state;

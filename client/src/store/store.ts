@@ -1,15 +1,41 @@
-import { createStore } from "redux";
+import { createStore, combineReducers, applyMiddleware } from "redux";
 import { categoryReducer } from "../reducers/categoryReducers";
-import { Category } from "../../../_requests/addCategory";
+import { globalReducer } from "../reducers/globalReducer";
+import { Category } from "../../../_models/category";
+import { composeWithDevTools } from "redux-devtools-extension";
 
 // Global store definition
-export interface State {
-    images: Category[]
+export interface CategoryState {
+    categories: Category[],
 }
 
-// Global initial state of the app
-export const initialState: State = {
+export interface GlobalState {
+    images: any[]
+}
+
+export interface State {
+    categoryReducer: CategoryState;
+    globalReducer: GlobalState;
+}
+
+export const categoryInitialState: CategoryState = {
+    categories: []
+}
+
+export const globalInitialState: GlobalState = {
     images: []
 }
 
-export const store = createStore(categoryReducer);
+// export const store = createStore(categoryReducer);
+
+/* eslint-disable no-underscore-dangle */
+export const store = createStore(
+    combineReducers({
+        categoryReducer,
+        globalReducer
+    }),
+    composeWithDevTools(
+        applyMiddleware(),
+    )
+);
+/* eslint-enable */

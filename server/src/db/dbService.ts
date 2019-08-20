@@ -1,4 +1,4 @@
-import { Category } from "../../../_requests/addCategory";
+import { Category } from "../../../_models/category";
 import { MongoClient, Db, ObjectID } from "mongodb";
 import _ from "lodash";
 import { MONGO_URL, DB_URL, CATEGOTY_COLLECTION } from "../mongoConfig";

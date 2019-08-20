@@ -1,6 +1,7 @@
 import {
     Application, Request, Response, NextFunction
 } from "express";
+import cors from "cors";
 import categoryRouter from "./routes/categeoryRoutes";
 
 // TODO: Is there really no better solution?
@@ -10,6 +11,11 @@ import * as bodyParser from "body-parser";
 const app: Application = express();
 
 app.use(bodyParser.json());
+
+// Allowing everything for now
+app.use(cors({
+    origin: "*"
+}));
 
 app.use("/category", categoryRouter);
 

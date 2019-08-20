@@ -3,7 +3,7 @@ import {
 } from "express";
 import {
     Category
-} from "../../../_requests/addCategory";
+} from "../../../_models/category";
 import { addCategory, listCategories, deleteCategory } from "../db/dbService";
 import { asyncErrHandler } from "../utils";
 import { OK_MESSAGE } from "../responses";
@@ -13,7 +13,7 @@ const categoryRouter: Router = express.Router();
 
 /* Add a category, with an optional parent id */
 categoryRouter
-    .route("/addCategory")
+    .route("/add")
     .post(async (req: Request, res: Response, next: NextFunction) => {
         asyncErrHandler(async () => {
             const body: Category = req.body;

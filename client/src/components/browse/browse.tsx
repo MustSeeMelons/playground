@@ -1,44 +1,88 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
-import { Divider, Paper, Grid, MenuList, MenuItem, Box } from "@material-ui/core";
+import { Divider, Paper, Grid, MenuList, MenuItem, Box, Container } from "@material-ui/core";
 import { connect } from "react-redux"
-import { Category } from "../../../../_requests/addCategory";
-import { addCategoryActionCreator } from "../../actions/categoryActions";
+import { Category } from "../../../../_models/category";
+import { addMultipleCategoryActionCreator } from "../../actions/categoryActions";
 import { State } from "../../store/store";
 import { Dispatch } from "redux";
+import { categoryApi, globalApi } from "../../api/api";
+import { CategoryListResponse } from "../../../../_responses/cateogryList";
+import { isCategoriesLoaded } from "../../selectors/categorySelectors";
+import { Progress } from "../progress/progress";
+import { addRandomPicActionCreator } from "../../actions/globalActions";
+import { isImagesLoaded } from "../../selectors/globalSelectors";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
-        mainCategories: {
-            width: "100px",
-            marginRight: "10px"
+        rootContainer: {
+            display: "flex",
+            padding: 0
+        },
+        rootCategoryMenu: {
+            width: "100px"
+        },
+        imageContainer: {
+            padding: "15px",
+            display: "flex"
+        },
+        image: {
+            width: "100%",
+            objectFit: "contain"
         }
     })
 );
 
-interface ContentProps {
-    images: Category[];
+interface BrowseProps {
+    categories: Category[];
+    isCategoriesLoaded: boolean;
+    isImagesLoaded: boolean;
+    images: any[];
+    addMultiple: (categoryListResponse: CategoryListResponse) => void;
+    addRandomPic: (image: any) => void;
+
 }
 
-const Browse: React.FC<ContentProps> = (props: ContentProps) => {
+const Browse: React.FC<BrowseProps> = (props: BrowseProps) => {
     const classes = useStyles();
+
+
+    useEffect(() => {
+        const { addMultiple, addRandomPic } = props;
+
+        (async () => {
+            const categoryListResponse: CategoryListResponse = await categoryApi.fetchCategories();
+            addMultiple(categoryListResponse);
+
+            const image = await globalApi.fetchRandomPics();
+
+            addRandomPic(image);
+        })();
+
+        // We are not using any component scope variables here, so this is safe
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <Paper>
-            <Grid container direction="row">
-                <MenuList className={classes.mainCategories}>
-                    {props.images.map((image, index) => {
-                        return (
-                            <Box key={`category-${index}`}>
-                                <MenuItem >
-                                    {image.title}
-                                </MenuItem>
-                                <Divider />
-                            </Box>
-                        )
-                    })}
+            <Container className={classes.rootContainer}>
+                <MenuList className={classes.rootCategoryMenu}>
+                    {props.isCategoriesLoaded ?
+                        props.categories.map((category: Category, index) => {
+                            return (
+                                <Box key={`category-${index}`}>
+                                    <MenuItem >
+                                        {category.title}
+                                    </MenuItem>
+                                    <Divider />
+                                </Box>
+                            )
+                        }) : <Progress />}
                 </MenuList>
-            </Grid>
+                <Container className={classes.imageContainer}>
+                    {props.isImagesLoaded ? <img className={classes.image} src={props.images[0]} alt="random" /> : <Progress />}
+                </Container>
+            </Container>
         </Paper>
     );
 }
@@ -46,19 +90,26 @@ const Browse: React.FC<ContentProps> = (props: ContentProps) => {
 // Which slice of the state we are interested in
 const mapStateToProps = (state: State) => {
     return {
-        ...state
+        categories: state.categoryReducer.categories,
+        images: state.globalReducer.images,
+        isCategoriesLoaded: isCategoriesLoaded(state),
+        isImagesLoaded: isImagesLoaded(state)
     }
 }
+
 
 // Which actions we wish to be able to dispatch using props.
 const mapDispatchToProps = (dispatch: Dispatch) => {
     return {
-        add: (): void => {
-            dispatch(addCategoryActionCreator({ title: "", id: "" }))
+        addMultiple: (CategoryListResponse: CategoryListResponse): void => {
+            dispatch(addMultipleCategoryActionCreator(CategoryListResponse));
+        },
+        addRandomPic: (image: any) => {
+            dispatch(addRandomPicActionCreator(image));
         }
     }
 }
 
-const ConnectedBrowse = connect(mapStateToProps, mapDispatchToProps)(Browse);
+const ConnectedBrowser = connect(mapStateToProps, mapDispatchToProps)(Browse);
 
-export { ConnectedBrowse as Browse }
+export { ConnectedBrowser as Browse }

@@ -6,6 +6,8 @@
         "concurrently": "4.1.1"
     },
     "scripts": {
+        "install-client": "npm i --prefix client",
+        "install-server": "npm i --prefix server",
         "start-client": "npm start --prefix client",
         "start-server": "npm run start:watch --prefix server",
         "start": "concurrently \"npm run start-client\" \"npm run start-server\" --kill-others"
