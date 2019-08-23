@@ -4,20 +4,24 @@ import { Icon } from "@mdi/react";
 import { mdiCow } from '@mdi/js'
 import blue from '@material-ui/core/colors/lightBlue';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
-import { store } from "../../store/store";
-import { addCategoryActionCreator } from "../../actions/categoryActions";
+import { history } from "../../util/history";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         title: {
             flexGrow: 1,
-            marginLeft: theme.spacing(2)
+            marginLeft: theme.spacing(2),
+            cursor: "pointer"
         }
     }),
 );
 
-const onClickTemp = () => {
-    store.dispatch(addCategoryActionCreator({ id: "", title: "yes" }))
+const onAddCategory = () => {
+    history.push("/add");
+}
+
+const toHome = () => {
+    history.push("/");
 }
 
 const Header: React.FC = () => {
@@ -30,10 +34,11 @@ const Header: React.FC = () => {
                 size={3}
                 color={blue.A100}
             />
-            <Typography variant="h4" className={classes.title}>
+            <Typography variant="h4" className={classes.title} onClick={toHome}>
                 Beef CMS
             </Typography>
-            <Button onClick={onClickTemp} color="inherit" >Login</Button>
+            <Button onClick={onAddCategory} color="inherit">Add Category</Button>
+            <Button onClick={() => { }} color="inherit" >Login</Button>
         </Toolbar>
     </AppBar>);
 }

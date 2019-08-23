@@ -4,7 +4,7 @@
  * @interface Category
  */
 export interface Category {
-    id: string;
+    _id: string;
     parentId?: string;
     title: string; // This should be a code, translated for each lang
 }

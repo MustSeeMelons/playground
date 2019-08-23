@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
-import { Divider, Paper, Grid, MenuList, MenuItem, Box, Container } from "@material-ui/core";
+import { Divider, Paper, MenuList, MenuItem, Box, Container } from "@material-ui/core";
 import { connect } from "react-redux"
 import { Category } from "../../../../_models/category";
 import { addMultipleCategoryActionCreator } from "../../actions/categoryActions";
@@ -43,10 +43,13 @@ interface BrowseProps {
 
 }
 
-const Browse: React.FC<BrowseProps> = (props: BrowseProps) => {
+/**
+ * 
+ */
+const LandingPage: React.FC<BrowseProps> = (props: BrowseProps) => {
     const classes = useStyles();
 
-
+    // TODO refactor this out as a method
     useEffect(() => {
         const { addMultiple, addRandomPic } = props;
 
@@ -64,8 +67,8 @@ const Browse: React.FC<BrowseProps> = (props: BrowseProps) => {
     }, []);
 
     return (
-        <Paper>
-            <Container className={classes.rootContainer}>
+        <Paper id="landingPagePaper">
+            <Container id="landingPageContainer" className={classes.rootContainer}>
                 <MenuList className={classes.rootCategoryMenu}>
                     {props.isCategoriesLoaded ?
                         props.categories.map((category: Category, index) => {
@@ -110,6 +113,6 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
     }
 }
 
-const ConnectedBrowser = connect(mapStateToProps, mapDispatchToProps)(Browse);
+const ConnectedLandingPage = connect(mapStateToProps, mapDispatchToProps)(LandingPage);
 
-export { ConnectedBrowser as Browse }
+export { ConnectedLandingPage as LandingPage }
