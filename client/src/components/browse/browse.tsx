@@ -3,15 +3,14 @@ import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import { Divider, Paper, MenuList, MenuItem, Box, Container } from "@material-ui/core";
 import { connect } from "react-redux"
 import { Category } from "../../../../_models/category";
-import { addMultipleCategoryActionCreator } from "../../actions/categoryActions";
 import { State } from "../../store/store";
 import { Dispatch } from "redux";
-import { categoryApi, globalApi } from "../../api/api";
-import { CategoryListResponse } from "../../../../_responses/cateogryList";
+import { globalApi } from "../../api/api";
 import { isCategoriesLoaded } from "../../selectors/categorySelectors";
 import { Progress } from "../progress/progress";
 import { addRandomPicActionCreator } from "../../actions/globalActions";
 import { isImagesLoaded } from "../../selectors/globalSelectors";
+import { stateActions } from "../../stateActions/stateActions";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -38,9 +37,7 @@ interface BrowseProps {
     isCategoriesLoaded: boolean;
     isImagesLoaded: boolean;
     images: any[];
-    addMultiple: (categoryListResponse: CategoryListResponse) => void;
     addRandomPic: (image: any) => void;
-
 }
 
 /**
@@ -49,13 +46,11 @@ interface BrowseProps {
 const LandingPage: React.FC<BrowseProps> = (props: BrowseProps) => {
     const classes = useStyles();
 
-    // TODO refactor this out as a method
     useEffect(() => {
-        const { addMultiple, addRandomPic } = props;
+        const { addRandomPic } = props;
 
         (async () => {
-            const categoryListResponse: CategoryListResponse = await categoryApi.fetchCategories();
-            addMultiple(categoryListResponse);
+            await stateActions.loadCategories();
 
             const image = await globalApi.fetchRandomPics();
 
@@ -104,9 +99,6 @@ const mapStateToProps = (state: State) => {
 // Which actions we wish to be able to dispatch using props.
 const mapDispatchToProps = (dispatch: Dispatch) => {
     return {
-        addMultiple: (CategoryListResponse: CategoryListResponse): void => {
-            dispatch(addMultipleCategoryActionCreator(CategoryListResponse));
-        },
         addRandomPic: (image: any) => {
             dispatch(addRandomPicActionCreator(image));
         }

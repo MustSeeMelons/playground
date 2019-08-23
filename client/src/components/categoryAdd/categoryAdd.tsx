@@ -5,8 +5,9 @@ import { connect } from "react-redux";
 import { FormControl, InputLabel, Select, MenuItem, Paper, TextField, Typography, Button, Container } from "@material-ui/core";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import { Category } from "../../../../_models/category";
-import { getChildrenForCateogry } from "../../selectors/categorySelectors";
+import { getChildrenForCateogry, isCategoriesLoaded } from "../../selectors/categorySelectors";
 import _ from "lodash";
+import { stateActions } from "../../stateActions/stateActions";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -57,6 +58,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface CategoryAddProps {
     categories: Category[];
+    isCategoriesLoaded: boolean;
 }
 
 interface CategoryAddState {
@@ -118,14 +120,24 @@ const CategoryAdd: React.FC<CategoryAddProps> = (props: CategoryAddProps) => {
         // TODO disable controls globally
         // TODO enbable them if all is well
         // TODO show err if shit hits the fan/partially enabled controls
-        console.log("save");
     }
 
     useEffect(() => {
-        addParentSelector();
+        (async () => {
+            if (!props.isCategoriesLoaded) {
+                await stateActions.loadCategories();
+            }
+        })();
+
         // We are not using any component scope variables here, so this is safe
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    useEffect(() => {
+        if (_.isEmpty(values.parentCategorySelector)) {
+            addParentSelector();
+        }
+    })
 
     return (
         <Paper id="categoryAddPaper" className={classes.categoryPaper}>
@@ -184,7 +196,8 @@ const CategoryAdd: React.FC<CategoryAddProps> = (props: CategoryAddProps) => {
 
 const mapStateToProps = (state: State) => {
     return {
-        categories: state.categoryReducer.categories
+        categories: state.categoryReducer.categories,
+        isCategoriesLoaded: isCategoriesLoaded(state)
     }
 }
 

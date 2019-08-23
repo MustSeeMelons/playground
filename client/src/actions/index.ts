@@ -1,4 +1,4 @@
-import { IAddCategory, IAddMultipleCategories } from "./categoryActions";
+import { IAddCategory, IAddMultipleCategories, ISetCategories } from "./categoryActions";
 import { IAddRandomPic } from "./globalActions";
 
-export type Action = IAddCategory | IAddMultipleCategories | IAddRandomPic;
+export type Action = IAddCategory | IAddMultipleCategories | IAddRandomPic | ISetCategories;
