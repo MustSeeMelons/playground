@@ -3,7 +3,7 @@
     "version": "0.1.0",
     "description": "Magnificent type-safe server.",
     "dependencies": {
-        "express": "4.17.1",
+        "express": "4.17.3",
         "mongodb": "3.3.0",
         "body-parser": "1.19.0",
         "chalk": "2.4.2",
